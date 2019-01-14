@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns = "http://www.springframework.org/schema/beans" 
+   xmlns:batch = "http://www.springframework.org/schema/batch" 
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" 
+   xsi:schemaLocation = "http://www.springframework.org/schema/batch 
+      http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+      http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-3.2.xsd "> 
+   <import resource="context.xml" />      
+   <!-- Defining a bean --> 
+   <bean id = "tasklet" class = "com.zhangyu.spring_batch.MyTasklet" />  
+   <bean id = "tasklet2" class = "com.zhangyu.spring_batch.MyTasklet2" />  
+   <!-- Defining a job--> 
+   <batch:job id = "helloWorldJob">  
+      <!-- Defining a Step next指向下一个任务id，如果step2中的next指向step1时，则会无限循环执行--> 
+      <batch:step id = "step1" next="step2"> 
+         <tasklet ref = "tasklet"/> 
+      </batch:step> 
+      <batch:step id = "step2" next="step1"> 
+         <tasklet ref = "tasklet2"/> 
+      </batch:step>    
+   </batch:job>  
+</beans>
